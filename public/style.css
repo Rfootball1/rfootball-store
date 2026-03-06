@@ -1,0 +1,266 @@
+/* ================================================================
+   RFootball Store — style.css ATUALIZADO
+   ================================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { height: 100%; height: -webkit-fill-available; }
+
+body {
+  height: 100vh;
+  height: 100dvh;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background: #111b21;
+  overflow: hidden;
+  display: flex;
+}
+
+/* ── App layout ─────────────────────────────── */
+#app {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* ================================================================
+   SIDEBAR
+   ================================================================ */
+#sidebar {
+  width: 360px; min-width: 360px;
+  background: #111b21;
+  display: flex; flex-direction: column;
+  border-right: 1px solid #2a3942;
+  flex-shrink: 0;
+}
+#sidebar-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px; background: #202c33; height: 60px; flex-shrink: 0;
+}
+#sidebar-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg,#00a884,#075e54);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 18px; font-weight: 600; cursor: pointer;
+}
+#sidebar-icons { display: flex; gap: 20px; color: #aebac1; }
+#sidebar-icons svg { width: 22px; height: 22px; cursor: pointer; transition: color .2s; }
+#sidebar-icons svg:hover { color: #e9edef; }
+#sidebar-search { padding: 8px 12px; background: #111b21; flex-shrink: 0; }
+.search-wrap { position: relative; }
+.search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #8696a0; width: 18px; height: 18px; pointer-events: none; }
+#sidebar-search input { width: 100%; padding: 8px 16px 8px 36px; background: #202c33; border: none; border-radius: 8px; color: #e9edef; font-size: 15px; outline: none; font-family: inherit; }
+#sidebar-search input::placeholder { color: #8696a0; }
+#sidebar-conversations { flex: 1; overflow-y: auto; }
+.convo-item { display: flex; align-items: center; padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #1f2c33; transition: background .15s; }
+.convo-item:hover, .convo-item.active { background: #202c33; }
+.convo-avatar { width: 49px; height: 49px; border-radius: 50%; background: linear-gradient(135deg,#00a884,#075e54); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; font-weight: 600; flex-shrink: 0; margin-right: 13px; }
+.convo-info { flex: 1; min-width: 0; }
+.convo-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+.convo-name { color: #e9edef; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.convo-time { color: #8696a0; font-size: 12px; white-space: nowrap; margin-left: 8px; flex-shrink: 0; }
+.convo-preview { color: #8696a0; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.convo-badge { background: #00a884; color: #fff; font-size: 12px; font-weight: 600; min-width: 20px; height: 20px; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 0 5px; margin-left: 8px; flex-shrink: 0; }
+
+/* ================================================================
+   CHAT AREA — três partes fixas
+   ================================================================ */
+#chat-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* ── Header fixo ────────────────────────────── */
+#chat-header {
+  display: flex; align-items: center;
+  padding: 10px 16px;
+  background: #202c33;
+  height: 60px;
+  border-bottom: 1px solid #2a3942;
+  flex-shrink: 0;
+  z-index: 10;
+  position: sticky; top: 0;
+}
+#header-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg,#25d366,#075e54); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-right: 12px; position: relative; }
+.avatar-letter { color: #fff; font-size: 18px; font-weight: 700; }
+.online-dot { position: absolute; bottom: 1px; right: 1px; width: 11px; height: 11px; background: #25d366; border-radius: 50%; border: 2px solid #202c33; }
+#header-info { flex: 1; min-width: 0; }
+#header-name { color: #e9edef; font-size: 16px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#header-status { color: #8696a0; font-size: 13px; }
+#header-status.online { color: #00a884; }
+#header-actions { display: flex; gap: 20px; color: #aebac1; flex-shrink: 0; }
+#header-actions svg { width: 24px; height: 24px; cursor: pointer; transition: color .2s; }
+#header-actions svg:hover { color: #e9edef; }
+
+/* ── Prova social ───────────────────────────── */
+#social-proof {
+  background: #1a2a32;
+  text-align: center;
+  padding: 6px 16px;
+  font-size: 12.5px;
+  color: #8696a0;
+  flex-shrink: 0;
+  border-bottom: 1px solid #2a3942;
+}
+#social-proof strong { color: #00a884; }
+
+/* ── Mensagens — scroll interno ─────────────── */
+#chat-messages-wrap {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  background-color: #0b141a;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cdefs%3E%3Cpattern id='p' width='60' height='60' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='10' cy='10' r='1.5' fill='%23ffffff07'/%3E%3Ccircle cx='40' cy='40' r='1.5' fill='%23ffffff07'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='300' height='300' fill='url(%23p)'/%3E%3C/svg%3E");
+  min-height: 0;
+}
+#chat-messages { padding: 12px 8% 8px; display: flex; flex-direction: column; gap: 2px; min-height: 100%; }
+
+/* Separador data */
+.date-separator { display: flex; justify-content: center; margin: 8px 0 12px; }
+.date-separator span { background: #182229; color: #8696a0; font-size: 12.5px; padding: 5px 12px; border-radius: 7px; box-shadow: 0 1px 1px rgba(0,0,0,.4); }
+
+/* Mensagem sistema */
+.system-msg { text-align: center; font-size: 12.5px; color: #8696a0; background: #182229; padding: 4px 14px; border-radius: 7px; margin: 6px auto; width: fit-content; }
+
+/* ── Bolhas ─────────────────────────────────── */
+.msg-row { display: flex; margin-bottom: 2px; animation: msgIn .22s ease-out both; }
+@keyframes msgIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.msg-row.bot  { justify-content: flex-start; }
+.msg-row.user { justify-content: flex-end; }
+
+.msg-bubble {
+  max-width: 65%;
+  padding: 6px 7px 22px 9px;
+  border-radius: 7.5px;
+  position: relative;
+  word-break: break-word;
+  box-shadow: 0 1px 2px rgba(0,0,0,.35);
+  line-height: 1.45;
+}
+.msg-row.bot .msg-bubble  { background: #202c33; border-top-left-radius: 0; color: #e9edef; }
+.msg-row.bot .msg-bubble::before  { content:''; position:absolute; top:0; left:-8px; border-top:8px solid #202c33; border-left:8px solid transparent; }
+.msg-row.user .msg-bubble { background: #005c4b; border-top-right-radius: 0; color: #e9edef; }
+.msg-row.user .msg-bubble::after  { content:''; position:absolute; top:0; right:-8px; border-top:8px solid #005c4b; border-right:8px solid transparent; }
+
+.msg-text { font-size: 14.5px; white-space: pre-wrap; }
+.msg-meta { position: absolute; bottom: 4px; right: 7px; display: flex; align-items: center; gap: 3px; }
+.msg-time  { font-size: 11px; color: rgba(255,255,255,.45); white-space: nowrap; }
+.msg-check { font-size: 13px; color: rgba(255,255,255,.45); }
+.msg-check.read { color: #53bdeb; }
+
+/* ── Imagem no chat ─────────────────────────── */
+.msg-row.bot .msg-bubble.img-bubble {
+  padding: 4px 4px 22px 4px;
+  max-width: 260px;
+}
+.chat-img {
+  width: 100%;
+  max-width: 240px;
+  border-radius: 6px;
+  display: block;
+  box-shadow: 0 1px 3px rgba(0,0,0,.4);
+  animation: msgIn .3s ease-out both;
+  cursor: pointer;
+}
+.chat-img-placeholder {
+  width: 200px; height: 140px;
+  background: #2a3942;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: #8696a0; font-size: 13px;
+}
+
+/* ── Botões sociais finais ──────────────────── */
+.social-btns { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+.social-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 11px 20px;
+  border-radius: 20px; border: none; cursor: pointer;
+  font-size: 14px; font-weight: 600; font-family: inherit;
+  text-decoration: none; color: #fff;
+  transition: opacity .2s, transform .1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.social-btn:hover   { opacity: .9; }
+.social-btn:active  { transform: scale(.97); }
+.social-btn.instagram { background: linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045); }
+.social-btn.facebook  { background: #1877F2; }
+.social-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+/* ── Digitando ──────────────────────────────── */
+#typing-indicator { display: none; align-items: flex-end; margin-bottom: 4px; animation: msgIn .22s ease-out both; }
+#typing-indicator.visible { display: flex; }
+.typing-bubble { background: #202c33; border-radius: 7.5px; border-top-left-radius: 0; padding: 10px 14px; box-shadow: 0 1px 2px rgba(0,0,0,.35); position: relative; }
+.typing-bubble::before { content:''; position:absolute; top:0; left:-8px; border-top:8px solid #202c33; border-left:8px solid transparent; }
+.typing-dots { display: flex; gap: 4px; align-items: center; height: 18px; }
+.typing-dots span { width:8px; height:8px; background:#8696a0; border-radius:50%; animation: bounce 1.4s infinite ease-in-out; }
+.typing-dots span:nth-child(1) { animation-delay:0s; }
+.typing-dots span:nth-child(2) { animation-delay:.2s; }
+.typing-dots span:nth-child(3) { animation-delay:.4s; }
+@keyframes bounce { 0%,60%,100%{transform:translateY(0);opacity:.5;} 30%{transform:translateY(-7px);opacity:1;} }
+
+/* ── Botões opção ───────────────────────────── */
+#options-area { padding: 6px 8% 4px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; animation: msgIn .3s ease-out both; flex-shrink: 0; }
+.opt-btn { background:#005c4b; color:#e9edef; border:1.5px solid #00a884; border-radius:20px; padding:8px 18px; font-size:14px; font-family:inherit; cursor:pointer; transition:background .15s,transform .1s; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+.opt-btn:hover  { background:#007a65; }
+.opt-btn:active { transform:scale(.97); }
+.opt-btn:disabled { opacity:.5; cursor:not-allowed; }
+
+/* ── Input fixo no rodapé ───────────────────── */
+#input-area {
+  display: flex; align-items: flex-end; gap: 8px;
+  padding: 8px 12px;
+  background: #202c33;
+  flex-shrink: 0;
+  position: sticky; bottom: 0;
+  z-index: 10;
+}
+#msg-input {
+  flex: 1; background: #2a3942; border: none; border-radius: 8px;
+  padding: 10px 16px; color: #e9edef; font-size: 15px; font-family: inherit;
+  outline: none; resize: none; min-height: 42px; max-height: 120px;
+  line-height: 1.5; overflow-y: auto; -webkit-appearance: none;
+}
+#msg-input::placeholder { color: #8696a0; }
+#msg-input:disabled { opacity:.5; cursor:not-allowed; }
+#send-btn { width:42px; height:42px; min-width:42px; border-radius:50%; background:#00a884; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .15s,transform .1s; -webkit-tap-highlight-color:transparent; flex-shrink:0; }
+#send-btn:hover  { background:#02c497; }
+#send-btn:active { transform:scale(.93); }
+#send-btn:disabled { background:#2a3942; cursor:not-allowed; }
+#send-btn svg { width:20px; height:20px; color:#fff; }
+.input-icon { color:#8696a0; flex-shrink:0; display:flex; align-items:center; }
+
+/* ── Toast ──────────────────────────────────── */
+#toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(20px); background:#00a884; color:#fff; padding:10px 22px; border-radius:24px; font-size:14px; font-weight:500; box-shadow:0 4px 16px rgba(0,0,0,.4); opacity:0; transition:opacity .35s,transform .35s; z-index:999; white-space:nowrap; pointer-events:none; }
+#toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* ── Scrollbar ──────────────────────────────── */
+#chat-messages-wrap::-webkit-scrollbar { width:5px; }
+#chat-messages-wrap::-webkit-scrollbar-track { background:transparent; }
+#chat-messages-wrap::-webkit-scrollbar-thumb { background:#374045; border-radius:3px; }
+
+/* ================================================================
+   RESPONSIVIDADE
+   ================================================================ */
+@media (max-width: 900px) { #sidebar { width:280px; min-width:280px; } }
+
+@media (max-width: 768px) {
+  #sidebar { display:none; }
+  #chat-messages { padding:10px 4% 8px; }
+  #options-area  { padding:6px 4% 4px; }
+  .msg-bubble    { max-width:84%; }
+  .opt-btn       { padding:10px 20px; font-size:15px; }
+}
+
+@media (max-width: 420px) {
+  .msg-bubble { max-width:92%; }
+  .msg-text   { font-size:14px; }
+}
+
+.hidden { display:none !important; }
