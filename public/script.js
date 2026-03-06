@@ -214,28 +214,59 @@ function hideBackButton() {
 function goBack() {
   if (stepHistory.length === 0) return;
   const prev = stepHistory.pop();
+
+  // Restaurar estado anterior
   currentStep        = prev.step;
-  lead.interesse     = prev.lead.interesse;
-  lead.produto       = prev.lead.produto;
-  lead.assunto       = prev.lead.assunto;
-  lead.nome          = prev.lead.nome;
-  lead.forma_contato = prev.lead.forma_contato;
-  lead.whatsapp      = prev.lead.whatsapp;
-  lead.email         = prev.lead.email;
   teamDetected       = prev.teamDetected;
+  Object.assign(lead, prev.lead);
 
-  // Remove mensagens adicionadas após o ponto salvo
+  // Remover mensagens que apareceram depois do ponto salvo
   const all = messagesContainer.querySelectorAll('.msg-row');
-  for (let i = all.length-1; i >= prev.msgCount; i--) all[i]?.remove();
+  for (let i = all.length - 1; i >= prev.msgCount; i--) all[i]?.remove();
 
-  const backRow = document.getElementById('back-btn-row');
-  if (backRow) backRow.remove();
-
-  optionsArea.innerHTML=''; optionsArea.classList.add('hidden');
-  msgInput.disabled=true; sendBtn.disabled=true;
-  msgInput.value=''; msgInput.style.height='';
+  // Limpar UI
+  hideBackButton();
+  optionsArea.innerHTML = '';
+  optionsArea.classList.add('hidden');
+  msgInput.disabled = true;
+  sendBtn.disabled  = true;
+  msgInput.value    = '';
+  msgInput.style.height = '';
+  msgInput.placeholder  = 'Digite sua mensagem...';
   hideTyping();
-  runStep(currentStep);
+
+  // Re-executar step sem adicionar ao histórico novamente
+  _runStepNoHistory(currentStep);
+}
+
+// Versão de runStep que NÃO salva no histórico (usada pelo goBack)
+function _runStepNoHistory(index) {
+  if (isBotTyping) return;
+  const step  = steps[index];
+  const delay = 1400 + Math.random() * 700;
+  isBotTyping = true; showTyping();
+
+  setTimeout(async () => {
+    isBotTyping = false; hideTyping();
+    addMessage(step.text, 'bot');
+
+    if (index === 2 && teamDetected) {
+      const time = TIMES[teamDetected];
+      await new Promise(r => setTimeout(r, 600));
+      addImageMessage(time.img, time.nome);
+      await new Promise(r => setTimeout(r, 1200));
+      isBotTyping = true; showTyping();
+      await new Promise(r => setTimeout(r, 1400));
+      isBotTyping = false; hideTyping();
+      addMessage(`Essa é uma das camisas mais procuradas! 🔥\n\nSe quiser, posso verificar a disponibilidade para você.\n\nMas primeiro, como posso te chamar?`, 'bot');
+    }
+
+    if (step.final) { hideBackButton(); finalizeLead(); return; }
+
+    if (index > 0) showBackButton();
+    if (step.options) showOptions(step.options, step.optClasses || null, step.onOption.bind(step));
+    else if (step.input) enableInput(step.placeholder, step.inputType, step.onInput.bind(step));
+  }, delay);
 }
 
 // ================================================================
@@ -377,18 +408,22 @@ function enableInput(placeholder, inputType, callback) {
 // ================================================================
 // CONTROLE DE STEPS
 // ================================================================
-function advanceStep() { currentStep++; if (currentStep<steps.length) runStep(currentStep); }
+function advanceStep() {
+  // Salva estado atual ANTES de avançar — para poder voltar corretamente
+  stepHistory.push({
+    step:        currentStep,
+    teamDetected,
+    msgCount:    messagesContainer.querySelectorAll('.msg-row').length,
+    lead:        { ...lead }
+  });
+  currentStep++;
+  if (currentStep < steps.length) runStep(currentStep);
+}
 
 function runStep(index) {
   if (isBotTyping) return;
   const step=steps[index];
   const delay=1400+Math.random()*700;
-
-  stepHistory.push({
-    step:index, teamDetected,
-    msgCount: messagesContainer.querySelectorAll('.msg-row').length,
-    lead:{...lead}
-  });
 
   isBotTyping=true; showTyping();
 
