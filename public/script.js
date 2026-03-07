@@ -302,7 +302,7 @@ function _runStepNoHistory(index) {
       isBotTyping=false; hideTyping();
       const msgCamisa = ehSelecao
         ? `Essa é a camisa oficial da *${time.nome}* para a *Copa do Mundo 2026*! 🌍🏆\n\nTemos edição titular e reserva disponíveis.`
-        : `Essa é uma das camisas mais pedidas aqui na loja! 🔥\n\nTemos modelo titular e reserva disponíveis.`;
+        : `Essa é uma das camisas mais pedidas aqui na loja! 🔥\n\nPosso consultar a disponibilidade dessa edição nos modelo titular e reserva para você!`;
       addMessage(msgCamisa,'bot');
       await new Promise(r=>setTimeout(r,800));
       isBotTyping=true; showTyping();
@@ -548,8 +548,8 @@ function runStep(index) {
       isBotTyping=false; hideTyping();
 
       const msgCamisa = ehSelecao
-        ? `Essa é a camisa oficial da *${time.nome}* para a *Copa do Mundo 2026*! 🌍🏆\n\nposso consultar a disponibilidade dessa edição titular e reserva.`
-        : `Essa é uma das camisas mais pedidas aqui na loja! 🔥\n\nTemos modelo titular e reserva disponíveis.`;
+        ? `Essa é a camisa oficial da *${time.nome}* para a *Copa do Mundo 2026*! 🌍🏆\n\nPosso consultar a disponibilidade dessa edição nos modelo titular e reserva para você!`
+        : `Essa é uma das camisas mais pedidas aqui na loja! 🔥\n\nPosso consultar a disponibilidade dessa edição nos modelo titular e reserva para você!`;
       addMessage(msgCamisa, 'bot');
 
       await new Promise(r=>setTimeout(r,800));
