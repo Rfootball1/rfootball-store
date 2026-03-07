@@ -188,7 +188,7 @@ function detectarTime(texto) {
     // Europeus
     realmadrid:   ['real madrid','merengue','madrid'],
     barcelona:    ['barcelona','barca','blaugrana'],
-    manchester:   ['manchester city','man city','citizens','citao'],
+    manchester:   ['manchester city','man city','citizens','manchester'],
     liverpool:    ['liverpool','reds'],
     psg:          ['psg','paris saint germain','paris'],
     // Seleções Copa 2026
