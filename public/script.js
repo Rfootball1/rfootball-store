@@ -9,21 +9,36 @@ const lead = {
 };
 
 const TIMES = {
-  flamengo:     { nome:'Flamengo',             img:'img/flamengo.jpg'     },
-  corinthians:  { nome:'Corinthians',          img:'img/corinthians.jpg'  },
-  palmeiras:    { nome:'Palmeiras',            img:'img/palmeiras.jpg'    },
-  saopaulo:     { nome:'São Paulo',            img:'img/saopaulo.jpg'     },
-  santos:       { nome:'Santos',               img:'img/santos.jpg'       },
-  vasco:        { nome:'Vasco',                img:'img/vasco.jpg'        },
-  gremio:       { nome:'Grêmio',              img:'img/gremio.jpg'       },
+  // ── Brasileiros ──────────────────────────────
+  flamengo:     { nome:'Flamengo',             img:'img/flamengo.jpg'      },
+  corinthians:  { nome:'Corinthians',          img:'img/corinthians.jpg'   },
+  palmeiras:    { nome:'Palmeiras',            img:'img/palmeiras.jpg'     },
+  saopaulo:     { nome:'São Paulo',            img:'img/saopaulo.jpg'      },
+  santos:       { nome:'Santos',               img:'img/santos.jpg'        },
+  vasco:        { nome:'Vasco',                img:'img/vasco.jpg'         },
+  gremio:       { nome:'Grêmio',              img:'img/gremio.jpg'        },
   internacional:{ nome:'Internacional',        img:'img/internacional.jpg' },
-  atletico:     { nome:'Atlético Mineiro',     img:'img/atletico.jpg'     },
-  cruzeiro:     { nome:'Cruzeiro',             img:'img/cruzeiro.jpg'     },
-  fluminense:   { nome:'Fluminense',           img:'img/fluminense.jpg'   },
-  botafogo:     { nome:'Botafogo',             img:'img/botafogo.jpg'     },
-  bahia:        { nome:'Bahia',                img:'img/bahia.jpg'        },
-  fortaleza:    { nome:'Fortaleza',            img:'img/fortaleza.jpg'    },
-  athletico:    { nome:'Athletico Paranaense', img:'img/athletico.jpg'    },
+  atletico:     { nome:'Atlético Mineiro',     img:'img/atletico.jpg'      },
+  cruzeiro:     { nome:'Cruzeiro',             img:'img/cruzeiro.jpg'      },
+  fluminense:   { nome:'Fluminense',           img:'img/fluminense.jpg'    },
+  botafogo:     { nome:'Botafogo',             img:'img/botafogo.jpg'      },
+  bahia:        { nome:'Bahia',                img:'img/bahia.jpg'         },
+  fortaleza:    { nome:'Fortaleza',            img:'img/fortaleza.jpg'     },
+  athletico:    { nome:'Athletico Paranaense', img:'img/athletico.jpg'     },
+
+  // ── Europeus ─────────────────────────────────
+  realmadrid:   { nome:'Real Madrid',          img:'img/realmadrid.jpg'    },
+  barcelona:    { nome:'Barcelona',            img:'img/barcelona.jpg'     },
+  manchester:   { nome:'Manchester City',      img:'img/manchester.jpg'    },
+  liverpool:    { nome:'Liverpool',            img:'img/liverpool.jpg'     },
+  psg:          { nome:'PSG',                  img:'img/psg.jpg'           },
+
+  // ── Seleções — Copa do Mundo 2026 ────────────
+  brasil:       { nome:'Seleção Brasileira',   img:'img/brasil.jpg'        },
+  argentina:    { nome:'Argentina',            img:'img/argentina.jpg'     },
+  franca:       { nome:'França',               img:'img/franca.jpg'        },
+  alemanha:     { nome:'Alemanha',             img:'img/alemanha.jpg'      },
+  portugal:     { nome:'Portugal',             img:'img/portugal.jpg'      },
 };
 
 const AI_RESPOSTAS = [
@@ -92,11 +107,17 @@ const steps = [
       advanceStep();
     }
   },
-  // 2 — Nome
+  // 2 — Nome (ou imagem do time + confirmação)
   {
     get text() {
-      if (teamDetected) return `Boa escolha! 🔥\n\nOlha um exemplo da camisa da temporada atual:`;
-      if (lead.assunto)  return `Perfeito, anotei! 📝\n\nE como posso te chamar?`;
+      if (teamDetected) {
+        const ehSelecao = ['brasil','argentina','franca','alemanha','portugal'].includes(teamDetected);
+        if (ehSelecao) return `Boa escolha! 🌍\n\n*Copa do Mundo 2026* está chegando! Olha a camisa mais recente:`;
+        const ehEuropeu = ['realmadrid','barcelona','manchester','liverpool','psg'].includes(teamDetected);
+        if (ehEuropeu) return `Boa escolha! 🏆\n\nOlha um exemplo da camisa da temporada atual:`;
+        return `Boa escolha! 🔥\n\nOlha um exemplo da camisa da temporada atual:`;
+      }
+      if (lead.assunto) return `Perfeito, anotei! 📝\n\nE como posso te chamar?`;
       return `Entendido! 👍\n\nQual é o seu *nome*?`;
     },
     input: true,
@@ -148,14 +169,34 @@ function normalizar(str) {
 function detectarTime(texto) {
   const t = normalizar(texto);
   const mapa = {
-    flamengo:['flamengo','fla','mengao'],corinthians:['corinthians','coringao','timao'],
-    palmeiras:['palmeiras','verdao','porco'],saopaulo:['sao paulo','spfc'],
-    santos:['santos','peixe'],vasco:['vasco','cruzmaltino'],
-    gremio:['gremio','imortal'],internacional:['internacional','inter','colorado'],
-    atletico:['atletico mineiro','atletico mg','galo'],cruzeiro:['cruzeiro','raposa'],
-    fluminense:['fluminense','flu'],botafogo:['botafogo','glorioso'],
-    bahia:['bahia','esquadrao'],fortaleza:['fortaleza','leao do pici'],
-    athletico:['athletico paranaense','athletico','furacao','cap'],
+    // Brasileiros
+    flamengo:     ['flamengo','fla','mengao'],
+    corinthians:  ['corinthians','coringao','timao'],
+    palmeiras:    ['palmeiras','verdao','porco'],
+    saopaulo:     ['sao paulo','spfc','tricolor paulista'],
+    santos:       ['santos','peixe'],
+    vasco:        ['vasco','cruzmaltino'],
+    gremio:       ['gremio','imortal'],
+    internacional:['internacional','inter','colorado'],
+    atletico:     ['atletico mineiro','atletico mg','galo'],
+    cruzeiro:     ['cruzeiro','raposa'],
+    fluminense:   ['fluminense','flu'],
+    botafogo:     ['botafogo','glorioso'],
+    bahia:        ['bahia','esquadrao'],
+    fortaleza:    ['fortaleza','leao do pici'],
+    athletico:    ['athletico paranaense','athletico','furacao','cap'],
+    // Europeus
+    realmadrid:   ['real madrid','merengue','madrid'],
+    barcelona:    ['barcelona','barca','blaugrana'],
+    manchester:   ['manchester city','man city','citizens','citao'],
+    liverpool:    ['liverpool','reds'],
+    psg:          ['psg','paris saint germain','paris'],
+    // Seleções Copa 2026
+    brasil:       ['brasil','brazil','selecao','verde amarela','canarinha'],
+    argentina:    ['argentina','albiceleste'],
+    franca:       ['franca','france','les bleus'],
+    alemanha:     ['alemanha','germany','mannschaft'],
+    portugal:     ['portugal','selecao portuguesa','cristiano'],
   };
   for (const [key,aliases] of Object.entries(mapa)) {
     if (aliases.some(a=>t.includes(normalizar(a)))) return key;
@@ -252,17 +293,79 @@ function _runStepNoHistory(index) {
 
     if (index === 2 && teamDetected) {
       const time = TIMES[teamDetected];
-      await new Promise(r => setTimeout(r, 600));
+      const ehSelecao = ['brasil','argentina','franca','alemanha','portugal'].includes(teamDetected);
+      await new Promise(r=>setTimeout(r,600));
       addImageMessage(time.img, time.nome);
-      await new Promise(r => setTimeout(r, 1200));
-      isBotTyping = true; showTyping();
-      await new Promise(r => setTimeout(r, 1400));
-      isBotTyping = false; hideTyping();
-      addMessage(`Essa é uma das camisas mais procuradas! 🔥\n\nSe quiser, posso verificar a disponibilidade para você.\n\nMas primeiro, como posso te chamar?`, 'bot');
+      await new Promise(r=>setTimeout(r,1200));
+      isBotTyping=true; showTyping();
+      await new Promise(r=>setTimeout(r,1300));
+      isBotTyping=false; hideTyping();
+      const msgCamisa = ehSelecao
+        ? `Essa é a camisa oficial da *${time.nome}* para a *Copa do Mundo 2026*! 🌍🏆\n\nTemos edição titular e reserva disponíveis.`
+        : `Essa é uma das camisas mais pedidas aqui na loja! 🔥\n\nTemos modelo titular e reserva disponíveis.`;
+      addMessage(msgCamisa,'bot');
+      await new Promise(r=>setTimeout(r,800));
+      isBotTyping=true; showTyping();
+      await new Promise(r=>setTimeout(r,1200));
+      isBotTyping=false; hideTyping();
+      addMessage(`É essa camisa que você procura ou está pensando em algum outro modelo? 👇`,'bot');
+      if (index>0) showBackButton();
+      showOptions(
+        [`✅ É essa, quero essa!`,`🔄 Quero outro modelo`],
+        ['opt-primary','opt-secondary'],
+        (val)=>{
+          if (val.includes('outro')) {
+            isBotTyping=true; showTyping();
+            setTimeout(()=>{
+              isBotTyping=false; hideTyping();
+              addMessage('Claro! Qual camisa ou time você está procurando? 😊','bot');
+              enableInput('Ex: Liverpool, Portugal, Grêmio...','text',(novoTime)=>{
+                lead.produto=novoTime;
+                const nd=detectarTime(novoTime);
+                if (nd) {
+                  teamDetected=nd;
+                  const nto=TIMES[nd];
+                  isBotTyping=true; showTyping();
+                  setTimeout(async ()=>{
+                    isBotTyping=false; hideTyping();
+                    addMessage(`Ótima escolha! 🔥\n\nOlha a camisa do *${nto.nome}*:`,'bot');
+                    await new Promise(r=>setTimeout(r,500));
+                    addImageMessage(nto.img,nto.nome);
+                    await new Promise(r=>setTimeout(r,1000));
+                    isBotTyping=true; showTyping();
+                    await new Promise(r=>setTimeout(r,1200));
+                    isBotTyping=false; hideTyping();
+                    addMessage('Perfeito! Agora me conta, como posso te chamar? 😊','bot');
+                    if (index>0) showBackButton();
+                    enableInput('Digite seu nome...','text',(nome)=>{ lead.nome=nome; advanceStep(); });
+                  },1400);
+                } else {
+                  teamDetected=null;
+                  isBotTyping=true; showTyping();
+                  setTimeout(()=>{
+                    isBotTyping=false; hideTyping();
+                    addMessage('Anotado! Vou verificar essa camisa para você. 📝\n\nComo posso te chamar?','bot');
+                    if (index>0) showBackButton();
+                    enableInput('Digite seu nome...','text',(nome)=>{ lead.nome=nome; advanceStep(); });
+                  },1400);
+                }
+              });
+            },1200);
+          } else {
+            isBotTyping=true; showTyping();
+            setTimeout(()=>{
+              isBotTyping=false; hideTyping();
+              addMessage('Ótimo! Vou verificar a disponibilidade para você. 🙌\n\nComo posso te chamar?','bot');
+              if (index>0) showBackButton();
+              enableInput('Digite seu nome...','text',(nome)=>{ lead.nome=nome; advanceStep(); });
+            },1400);
+          }
+        }
+      );
+      return;
     }
 
     if (step.final) { hideBackButton(); finalizeLead(); return; }
-
     if (index > 0) showBackButton();
     if (step.options) showOptions(step.options, step.optClasses || null, step.onOption.bind(step));
     else if (step.input) enableInput(step.placeholder, step.inputType, step.onInput.bind(step));
@@ -432,14 +535,88 @@ function runStep(index) {
     addMessage(step.text,'bot');
 
     if (index===2 && teamDetected) {
-      const time=TIMES[teamDetected];
+      const time = TIMES[teamDetected];
+      const ehSelecao = ['brasil','argentina','franca','alemanha','portugal'].includes(teamDetected);
+
       await new Promise(r=>setTimeout(r,600));
-      addImageMessage(time.img,time.nome);
+      addImageMessage(time.img, time.nome);
       await new Promise(r=>setTimeout(r,1200));
+
+      // Mensagem sobre a camisa
       isBotTyping=true; showTyping();
-      await new Promise(r=>setTimeout(r,1400));
+      await new Promise(r=>setTimeout(r,1300));
       isBotTyping=false; hideTyping();
-      addMessage(`Essa é uma das camisas mais procuradas! 🔥\n\nSe quiser, posso verificar a disponibilidade para você.\n\nMas primeiro, como posso te chamar?`,'bot');
+
+      const msgCamisa = ehSelecao
+        ? `Essa é a camisa oficial da *${time.nome}* para a *Copa do Mundo 2026*! 🌍🏆\n\nTemos edição titular e reserva disponíveis.`
+        : `Essa é uma das camisas mais pedidas aqui na loja! 🔥\n\nTemos modelo titular e reserva disponíveis.`;
+      addMessage(msgCamisa, 'bot');
+
+      await new Promise(r=>setTimeout(r,800));
+
+      // Pergunta de confirmação — é essa ou outro modelo?
+      isBotTyping=true; showTyping();
+      await new Promise(r=>setTimeout(r,1200));
+      isBotTyping=false; hideTyping();
+      addMessage(`É essa camisa que você procura ou está pensando em algum outro modelo? 👇`, 'bot');
+
+      if (index>0) showBackButton();
+      showOptions(
+        [`✅ É essa, quero essa!`, `🔄 Quero outro modelo`],
+        ['opt-primary','opt-secondary'],
+        (val) => {
+          if (val.includes('outro')) {
+            // Deixar digitar outro time
+            isBotTyping=true; showTyping();
+            setTimeout(()=>{
+              isBotTyping=false; hideTyping();
+              addMessage('Claro! Qual camisa ou time você está procurando? 😊','bot');
+              enableInput('Ex: Liverpool, Portugal, Grêmio...','text',(novoTime)=>{
+                lead.produto = novoTime;
+                const novoDetectado = detectarTime(novoTime);
+                if (novoDetectado) {
+                  teamDetected = novoDetectado;
+                  const novoTimeObj = TIMES[novoDetectado];
+                  isBotTyping=true; showTyping();
+                  setTimeout(async ()=>{
+                    isBotTyping=false; hideTyping();
+                    addMessage(`Ótima escolha! 🔥\n\nOlha a camisa do *${novoTimeObj.nome}*:`,'bot');
+                    await new Promise(r=>setTimeout(r,500));
+                    addImageMessage(novoTimeObj.img, novoTimeObj.nome);
+                    await new Promise(r=>setTimeout(r,1000));
+                    isBotTyping=true; showTyping();
+                    await new Promise(r=>setTimeout(r,1200));
+                    isBotTyping=false; hideTyping();
+                    addMessage('Perfeito! Agora me conta, como posso te chamar? 😊','bot');
+                    if (index>0) showBackButton();
+                    enableInput('Digite seu nome...','text',(nome)=>{ lead.nome=nome; advanceStep(); });
+                  },1400);
+                } else {
+                  // Time não identificado — seguir normalmente
+                  teamDetected = null;
+                  isBotTyping=true; showTyping();
+                  setTimeout(()=>{
+                    isBotTyping=false; hideTyping();
+                    addMessage('Anotado! Vou verificar essa camisa para você. 📝\n\nComo posso te chamar?','bot');
+                    if (index>0) showBackButton();
+                    enableInput('Digite seu nome...','text',(nome)=>{ lead.nome=nome; advanceStep(); });
+                  },1400);
+                }
+              });
+            },1200);
+          } else {
+            // Confirma a camisa atual — continua para o nome
+            isBotTyping=true; showTyping();
+            setTimeout(()=>{
+              isBotTyping=false; hideTyping();
+              addMessage('Ótimo! Vou verificar a disponibilidade para você. 🙌\n\nComo posso te chamar?','bot');
+              if (index>0) showBackButton();
+              enableInput('Digite seu nome...','text',(nome)=>{ lead.nome=nome; advanceStep(); });
+            },1400);
+          }
+        }
+      );
+      return; // Não executa o fluxo padrão abaixo
     }
 
     if (step.final) { hideBackButton(); finalizeLead(); setTimeout(()=>{ isBotTyping=true; showTyping(); setTimeout(()=>{ isBotTyping=false; hideTyping(); addSocialButtons(); },1500); },1000); return; }
