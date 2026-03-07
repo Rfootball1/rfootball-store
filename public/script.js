@@ -548,7 +548,7 @@ function runStep(index) {
       isBotTyping=false; hideTyping();
 
       const msgCamisa = ehSelecao
-        ? `Essa é a camisa oficial da *${time.nome}* para a *Copa do Mundo 2026*! 🌍🏆\n\nTemos edição titular e reserva disponíveis.`
+        ? `Essa é a camisa oficial da *${time.nome}* para a *Copa do Mundo 2026*! 🌍🏆\n\nposso consultar a disponibilidade dessa edição titular e reserva.`
         : `Essa é uma das camisas mais pedidas aqui na loja! 🔥\n\nTemos modelo titular e reserva disponíveis.`;
       addMessage(msgCamisa, 'bot');
 
